@@ -1,5 +1,5 @@
 import requests
-import html
+
 
 parameters = {
     "amount": 10,
