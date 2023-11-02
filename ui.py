@@ -5,7 +5,7 @@ THEME_COLOR = "#375362"
 
 class QuizInterFace:
 
-    def __init__(self):
+    def __init__(self, question):
         self.window = Tk()
         self.window.title("Quizzler")
         self.window.geometry("350x460")
@@ -27,7 +27,7 @@ class QuizInterFace:
         self.score_text.grid(column=1, row=0, sticky="S")
 
         # Question text
-        self.canvas_text = self.canvas.create_text(150, 125, text="Question", font=("Arial", 20, "italic"))
+        self.canvas_text = self.canvas.create_text(150, 125, text=question, font=("Arial", 20, "italic"))
 
 
         self.window.mainloop()
