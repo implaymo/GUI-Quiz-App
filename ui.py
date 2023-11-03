@@ -57,17 +57,28 @@ class QuizInterFace:
 
     def true_button_pressed(self):
         """Checks if true button got pressed"""
-        self.user_answer = "True"
-        self.quiz.check_answer(user_answer=self.user_answer)
-        self.update_score()
-        self.get_next_question()
+        if not self.quiz.still_has_questions():
+            print("You've completed the quiz")
+            print(f"Your final score was: {self.quiz.score}/{self.quiz.question_number}")
+            exit()
+        else:
+            self.user_answer = "True"
+            self.quiz.check_answer(user_answer=self.user_answer)
+            self.update_score()
+            self.get_next_question()
 
     def false_button_pressed(self):
         """Checks if false button got pressed"""
-        self.user_answer = "False"
-        self.quiz.check_answer(user_answer=self.user_answer)
-        self.update_score()
-        self.get_next_question()
+        if not self.quiz.still_has_questions():
+            print("You've completed the quiz")
+            print(f"Your final score was: {self.quiz.score}/{self.quiz.question_number}")
+            exit()
+        else:
+            self.user_answer = "False"
+            self.quiz.check_answer(user_answer=self.user_answer)
+            self.update_score()
+            self.get_next_question()
+
 
     def update_score(self):
         """Update score"""
@@ -80,4 +91,5 @@ class QuizInterFace:
             self.window.after(1000, self.revert_background_color)
 
     def revert_background_color(self):
+        """"Changes background of canvas back to original"""
         self.canvas.config(bg="white")
