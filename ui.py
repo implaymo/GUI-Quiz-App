@@ -1,13 +1,16 @@
 from tkinter import *
 from quiz_brain import QuizBrain
 
+
 THEME_COLOR = "#375362"
 
 
 class QuizInterFace:
 
-    def __init__(self, quiz_brain: QuizBrain ):
+    def __init__(self, quiz_brain: QuizBrain):
         self.quiz = quiz_brain
+        # User answer
+        self.user_answer = None
 
         self.window = Tk()
         self.window.title("Quizzler")
@@ -25,17 +28,21 @@ class QuizInterFace:
         self.false_image = PhotoImage(file="images/false.png")
 
         # Buttons
-        self.right_button = Button(self.window, image=self.true_image, highlightthickness=0)
-        self.right_button.grid(column=0, row=2)
-        self.false_button = Button(self.window, image=self.false_image, highlightthickness=0)
+        self.true_button = Button(self.window, image=self.true_image,
+                                  highlightthickness=0, command=self.true_button_answer)
+        self.true_button.grid(column=0, row=2)
+
+        self.false_button = Button(self.window, image=self.false_image,
+                                   highlightthickness=0, command=self.false_button_answer)
         self.false_button.grid(column=1, row=2)
 
         # Score text
-        self.score_text = Label(self.window, text="Score: 0 ", font=("Arial", 15, "italic"), bg=THEME_COLOR, fg="white")
+        self.score_text = Label(self.window, text=f"Score: {self.quiz.score}", font=("Arial", 15, "italic"), bg=THEME_COLOR, fg="white")
         self.score_text.grid(column=1, row=0, sticky="S")
 
         # Question text
-        self.question_text = self.canvas.create_text(150, 125, width=280, text="Question", font=("Arial", 20, "italic"), fill=THEME_COLOR)
+        self.question_text = self.canvas.create_text(150, 125, width=280,
+                                                     text="Question", font=("Arial", 20, "italic"), fill=THEME_COLOR)
 
         self.get_next_question()
 
@@ -44,3 +51,18 @@ class QuizInterFace:
     def get_next_question(self):
         q_text = self.quiz.next_question()
         self.canvas.itemconfig(self.question_text, text=q_text)
+
+    def true_button_answer(self):
+        self.user_answer = "True"
+        self.quiz.check_answer(user_answer=self.user_answer)
+        self.update_score()
+        self.get_next_question()
+
+    def false_button_answer(self):
+        self.user_answer = "False"
+        self.quiz.check_answer(user_answer=self.user_answer)
+        self.update_score()
+        self.get_next_question()
+
+    def update_score(self):
+        self.score_text.config(text="Score: " + str(self.quiz.score))
